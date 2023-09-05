@@ -59,6 +59,9 @@ class Performance(models.Model):
     )
     show_time = models.DateTimeField()
 
+    class Meta:
+        ordering = ["-show_time"]
+
 
 class Reservation(models.Model):
     created_at = models.DateTimeField()
@@ -66,6 +69,12 @@ class Reservation(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
+
+    def __str__(self):
+        return str(self.created_at)
+
+    class Meta:
+        ordering = ["-created_at"]
 
 
 class Ticket(models.Model):
@@ -81,7 +90,3 @@ class Ticket(models.Model):
         on_delete=models.CASCADE,
         related_name="tickets"
     )
-
-
-
-
