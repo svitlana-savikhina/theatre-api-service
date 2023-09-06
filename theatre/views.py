@@ -88,12 +88,11 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         .select_related("play", "theatre_hall")
         .annotate(
             ticket_available=(
-                F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
-                - Count("tickets")
+                    F("theatre_hall__rows") * F("theatre_hall__seats_in_row")
+                    - Count("tickets")
             )
         )
     )
-
 
     def get_queryset(self):
         date = self.request.query_params.get("date")
@@ -123,7 +122,6 @@ class PerformanceViewSet(viewsets.ModelViewSet):
 class ReservationPagination(PageNumberPagination):
     page_size = 10
     max_page_size = 100
-
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
