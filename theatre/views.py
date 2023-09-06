@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.db.models import F, Count
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 
 from theatre.models import (
     Actor,
@@ -54,7 +55,7 @@ class PlayViewSet(viewsets.ModelViewSet):
         if title:
             queryset = queryset.filter(title__icontains=title)
             genres_ids = self._params_to_ints(genres)
-            queryset = queryset.filter(genres_ids__in=genres_ids)
+            queryset = queryset.filter(genres_id__in=genres_ids)
 
         if genres:
             genres_ids = self._params_to_ints(genres)
@@ -92,7 +93,7 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             )
         )
     )
-    serializer_class = PerformanceSerializer
+
 
     def get_queryset(self):
         date = self.request.query_params.get("date")
@@ -105,7 +106,7 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(show_time__date=date)
 
         if play_id_str:
-            queryset = queryset.filter(movie_id=int(play_id_str))
+            queryset = queryset.filter(play_id=int(play_id_str))
 
         return queryset
 
@@ -119,15 +120,25 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         return PerformanceSerializer
 
 
+class ReservationPagination(PageNumberPagination):
+    page_size = 10
+    max_page_size = 100
+
+
+
 class ReservationViewSet(viewsets.ModelViewSet):
     queryset = Reservation.objects.prefetch_related(
         "tickets__performance__play",
         "tickets__performance__theatre_hall"
     )
     serializer_class = ReservationSerializer
+    pagination_class = ReservationPagination
 
     def get_serializer_class(self):
         if self.action == "list":
             return ReservationListSerializer
 
         return ReservationSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

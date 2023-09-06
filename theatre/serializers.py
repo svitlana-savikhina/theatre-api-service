@@ -100,7 +100,7 @@ class PerformanceSerializer(serializers.ModelSerializer):
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
-        fields = "__all__"
+        fields = ("id", "row", "seat", "performance", "reservation")
 
 
 class TicketListSerializer(TicketSerializer):
