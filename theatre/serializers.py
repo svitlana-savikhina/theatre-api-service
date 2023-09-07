@@ -74,6 +74,11 @@ class PlayDetailSerializer(serializers.ModelSerializer):
         )
 
 
+class PlayImageSerializer(serializers.ModelSerializer):
+    model = Play
+    fields = ("id", "image")
+
+
 class TheatreHallSerializer(serializers.ModelSerializer):
     class Meta:
         model = TheatreHall
