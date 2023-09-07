@@ -1,3 +1,6 @@
+import os.path
+import uuid
+
 from django.conf import settings
 from django.db import models
 
@@ -22,12 +25,17 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+def play_image_file_path(instance, filename):
+    _, extension = os.path.splitext(filename)
+    filename = f"{slugify(instance.info)} - {uuid.uuid4()}.{extension}"
+    return os.path.join("uploads/plays/", filename)
 
 class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
     genres = models.ManyToManyField(Genre, blank=True)
     actors = models.ManyToManyField(Actor, blank=True)
+    image = models.ImageField(null=True, upload_to=play_image_file_path)
 
     def __str__(self):
         return self.title
