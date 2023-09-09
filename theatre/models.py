@@ -3,6 +3,7 @@ import uuid
 
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 
 from user.models import User
 
@@ -25,10 +26,12 @@ class Genre(models.Model):
     def __str__(self):
         return self.name
 
+
 def play_image_file_path(instance, filename):
     _, extension = os.path.splitext(filename)
     filename = f"{slugify(instance.info)} - {uuid.uuid4()}.{extension}"
     return os.path.join("uploads/plays/", filename)
+
 
 class Play(models.Model):
     title = models.CharField(max_length=255)

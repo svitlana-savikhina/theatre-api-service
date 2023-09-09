@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "drf_spectacular",
     "rest_framework.authtoken",
     "theatre",
     "user",
@@ -131,11 +132,26 @@ MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+
+    "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
-    ],
+    ),
 
     "DEFAULT_PERMISSIONS_CLASSES": [
         "theatre.permissions.IsAdminOrIfAuthenticatedReadOnly",
-    ]
+    ],
+    }
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Theatre Service API",
+    "DESCRIPTION": "Play ticket booking",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_SETTINGS": {
+        "deepLinking": True,
+        "defaultModelRendering": "model",
+        "defaultModelsExpandDepth": 2,
+        "defaultModelExpandDepth": 2
+    }
 }
