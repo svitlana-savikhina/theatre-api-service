@@ -74,7 +74,7 @@ class PlayViewSet(
         if title:
             queryset = queryset.filter(title__icontains=title)
             genres_ids = self._params_to_ints(genres)
-            queryset = queryset.filter(genres_id__in=genres_ids)
+            queryset = queryset.filter(genres__id__in=genres_ids)
 
         if genres:
             genres_ids = self._params_to_ints(genres)
@@ -148,7 +148,7 @@ class TheatreHallViewSet(
 
 class PerformanceViewSet(viewsets.ModelViewSet):
     queryset = (
-        Performance.objects.all()
+        Performance.objects
         .select_related("play", "theatre_hall")
         .annotate(
             ticket_available=(
@@ -157,6 +157,7 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             )
         )
     )
+    serializer_class = PerformanceSerializer
 
     def get_queryset(self):
         date = self.request.query_params.get("date")
