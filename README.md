@@ -15,6 +15,12 @@ pip install -r requirements.txt
 python manage.py migrate
 python manage.py runserver #starts Django Server
 ```
+Create .env file in root directory, define environment variables in it (example you can find in .env_sample)
+
+## Run command
+```shell
+docker-compose up
+```
 
 ## Features
 * Using jwt fut authentication
