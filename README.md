@@ -23,7 +23,7 @@ docker-compose up
 ```
 
 ## Features
-* Using jwt fut authentication
+* Using JWT for authentication
 * Using the Spectacular documentation generation component, the documentation provides detailed information about the endpoints, requests and responses that are associated with working with our API.
 * Strong Django admin panel 
 
